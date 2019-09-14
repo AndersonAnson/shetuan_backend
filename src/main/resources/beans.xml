@@ -29,4 +29,6 @@
      <!-- 加载数据源组件 -->        
     <import resource="classpath:datasource.xml" />
     
+    <!-- 引入 spring 与 shiro 整合配置 -->
+	<import resource="classpath:spring-shiro.xml"/>
 </beans>

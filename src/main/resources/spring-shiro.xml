@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- shiro 的核心，web.xml中委派代理的实质内容就在这里定义 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+      <property name="securityManager" ref="securityManager"/>
+      <!-- 没有登录的用户请求，将会返回到这个地址 -->
+      <property name="loginUrl" value="/login"/> 
+      <property name="successUrl" value="/login/loginSuccessFull" />  
+      <property name="unauthorizedUrl" value="/login/unauthorized" />  
+      <property name="filterChainDefinitions">
+        <value>
+        	/admin/** = roles[admin]
+          <!--/admin/** = authc, roles[admin]-->
+          /logout = logout
+          /index = authc
+        </value>
+      </property>
+    </bean>
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!-- 单 Realm。如果是多 Realm 需要配置为 'realms' -->
+        <property name="realm" ref="customRealm"/>
+    </bean>
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- 自定义 Realm 的类 -->
+    <bean id="customRealm" class="com.shetuan.shiro.CustomRealm">
+    </bean>
+</beans>
